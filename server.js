@@ -13,15 +13,14 @@ app.get('/',(req,res,next)=>{
 })
 
 app.get('/envelopes/:id',(req,res,next)=>{
-  const sobre=req.params.id
-  envelopes.forEach(x=>{
-    if (x.id==sobre){
-        res.send(x)
+    const sobre=req.params.id
+    const siid=envelopes.find(x=>x.id==sobre)
+    if(siid){
+        res.send(siid)
     }else{
-        res.send('no existe el id')
+        res.send('no se encuentra el id')
     }
-  })
-  console.log()  
+  console.log(siid)  
 }
 )
 
@@ -35,6 +34,19 @@ app.post('/newenvelopes',(req,res,next)=>{
     envelopes.push(nuevosobre)
     res.json(envelopes)
     console.log(nuevosobre) 
+})
+
+app.put('/envelope/:id/:bud',(req,res,next)=>{
+    const pathid=req.params.id
+    const newbudget=req.params.bud
+    const indiceId=envelopes.findIndex(x=>x.id==pathid)
+    if(indiceId!=-1){
+        envelopes[indiceId].budget=newbudget
+        res.send(envelopes[indiceId])
+    }else{
+        res.send('no existe el id')
+    }
+
 })
 
 
